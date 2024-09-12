@@ -23,6 +23,7 @@ Sprites have been re-uploaded to the repo, and are referenced locally to avoid s
     - Custom CSS: `body { background-color: rgba(0, 0, 0, 0); overflow: hidden; }`
 - Add `Scroll` effect filters to the image and browser sources.
     - Horizontal Speed: `11`.
+    - Loop: `Enable`.
 
 ![image](.readme/OBS_1.png)
 
