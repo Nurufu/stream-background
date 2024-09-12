@@ -1,6 +1,6 @@
 max_onscreen = 16;
 shiny_odds = 1 / 128;
-refresh_mins = 5;
+reload_mins = 5;
 
 create();
 window.onload = function () {
@@ -13,7 +13,7 @@ $(function () {
         $('body').fadeOut(500, function () {
             location.reload(true);
         });
-    }, refresh_mins * 60000);
+    }, reload_mins * 60000);
 });
 
 function create() {
