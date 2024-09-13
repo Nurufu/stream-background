@@ -12,8 +12,25 @@ img {
     -ms-animation: fadeIn ease 5s;
 }
 
+.wailordnone {
+    image-rendering: crisp-edges;
+    max-width: 500px;
+    width: 500px;
+    padding-left: 300px;
+    padding-right: 300px;
+}
+
+.wailordsparkle {
+    image-rendering: crisp-edges;
+    max-width: 1000px;
+    width: 1000px;
+    padding-left: 500px;
+    padding-right: 500px;
+}
+
 html {
     width: 100vw;
+    height: 100vh;
 }
 
 @keyframes fadeIn {
