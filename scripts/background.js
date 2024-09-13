@@ -90,7 +90,6 @@ var randomOrder = function () {
             }
 
             image.style.cssText += "--x-position:" + x + "px; --y-position:" + y + "px; z-index:" + z;
-            console.log(x + ", " + y + ", " + z);
 
             if (image['className'] == "sparkle") {
                 sparkles += '<img style="--x-position:' + (x - (image['width'] / 6)) + 'px; --y-position:' + (y - (image['height'] / 6)) + 'px; z-index: -1; width: ' + (image['width'] * 1.3) + 'px; max-height: 150px; max-width: 150px" src="./sprites/sparkles.gif" onerror="this.style.display=\'none\'" alt=/>';
