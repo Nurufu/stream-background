@@ -1,6 +1,7 @@
 max_onscreen = 16;
 shiny_odds = 1 / 128;
 reload_mins = 5;
+big_wailords = true;
 
 create();
 window.onload = function () {
@@ -53,7 +54,14 @@ function create() {
         } else {
             area = "ground"
         }
-        onscreen_pokemon += '<img class="' + sparkle + '" id="' + area + '" src="sprites/' + shiny + form + '.gif" onerror="this.style.display=\'none\'" alt=/>';
+
+        special = ""
+
+        if (form == "wailord" && big_wailords) {
+            special = "wailord"
+        }
+
+        onscreen_pokemon += '<img class="' + special + sparkle + '" id="' + area + '" src="sprites/' + shiny + form + '.gif" onerror="this.style.display=\'none\'" alt=/>';
     });
 
     body_wrapper.innerHTML = onscreen_pokemon
@@ -73,10 +81,20 @@ var randomOrder = function () {
             var y = Math.floor(Math.random() * ((h - image.offsetHeight - hBot) - hTop + 1)) + hTop;
             var z = y;
 
+            if (image['className'] == "wailordnone") {
+                y -= 50;
+                z = 6969696969;
+            } else if (image['className'] == "wailordsparkle") {
+                y -= 200;
+                z = 6969696969;
+            }
+
             image.style.cssText += "--x-position:" + x + "px; --y-position:" + y + "px; z-index:" + z;
 
             if (image['className'] == "sparkle") {
                 sparkles += '<img style="--x-position:' + (x - (image['width'] / 6)) + 'px; --y-position:' + (y - (image['height'] / 6)) + 'px; z-index: -1; width: ' + (image['width'] * 1.3) + 'px; max-height: 150px; max-width: 150px" src="./sprites/sparkles.gif" onerror="this.style.display=\'none\'" alt=/>';
+            } else if (image['className'] == "wailordsparkle") {
+                sparkles += '<img style="--x-position:' + (x + (image['width'] / 6)) + 'px; --y-position:' + (y - (image['height'] / 6)) + 'px; z-index: -1; width: ' + (image['width'] * 1.3) + 'px; max-height: 1000px; max-width: 1000px" src="./sprites/sparkles.gif" onerror="this.style.display=\'none\'" alt=/>';
             }
         });
     }
