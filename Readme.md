@@ -2,6 +2,8 @@
 
 This is the background behind the [🔴24/7 ✨Shiny✨ Hunting Bot Stream](https://www.youtube.com/watch?v=W6OOnrx8g58).
 
+Wallpaper Engine version by Nurufu: https://steamcommunity.com/sharedfiles/filedetails/?id=3334138890
+
 Full credit for all sprites included: [Pokémon Showdown](https://pokemonshowdown.com/). ❤️
 - Normal 3D sprites: https://play.pokemonshowdown.com/sprites/ani/?C=M;O=D
 - Shiny 3D sprites: https://play.pokemonshowdown.com/sprites/ani-shiny/?C=M;O=D
