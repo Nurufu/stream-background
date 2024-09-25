@@ -2282,6 +2282,7 @@ floating_pokemon = [
     "vivillon-sun",
     "vivillon-tundra",
     "volcarona",
+    "wailord",
     "weezing",
     "weezing-galar",
     "wingull",
