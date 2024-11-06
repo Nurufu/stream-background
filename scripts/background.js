@@ -95,6 +95,7 @@ var randomOrder = function () {
             }
 
             if (image['className'] == "sphealnone" || image['className'] == "sphealsparkle") {
+                console.log('spheal')
                 $('.sphealnone').css('margin-top', y)
 				$('.sphealsparkle').css('margin-top', y)
 			}
