@@ -1,4 +1,4 @@
-max_onscreen = 16;
+max_onscreen = 256;
 shiny_odds = 1 / 128;
 reload_mins = 5;
 big_wailords = true;
@@ -95,6 +95,7 @@ var randomOrder = function () {
             }
 
             if (image['className'] == "sphealnone" || image['className'] == "sphealsparkle") {
+                console.log('spheal')
                 $('.sphealnone').css('margin-top', y)
 				$('.sphealsparkle').css('margin-top', y)
 			}
