@@ -1,10 +1,11 @@
 img {
     position: absolute;
-    max-width: 196px;
+    /*max-width: 196px;*/
     height: auto;
     padding-left: 100px;
     padding-right: 100px;
-    transform: translate(var(--x-position), var(--y-position)) scale(1.6);
+    /*transform: translate(var(--x-position), var(--y-position)) scale(1.6);*/
+    transform: translate(var(--x-position), var(--y-position));
     animation: fadeIn ease 5s;
     -webkit-animation: fadeIn ease 5s;
     -moz-animation: fadeIn ease 5s;

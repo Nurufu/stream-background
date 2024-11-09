@@ -1,8 +1,9 @@
-max_onscreen = 256;
+max_onscreen = 16;
 shiny_odds = 1 / 128;
 reload_mins = 5;
 big_wailords = true;
 spheal_spin = true;
+heights = true;
 
 create();
 window.onload = function () {
@@ -19,9 +20,20 @@ $(function () {
 });
 
 function create() {
+    var height_pos= [];
+    var height_multi = [];
+    var shuffled_size = [];
     var body_wrapper = document.getElementById("body");
-
-    shuffled_pokemon = shuffle(pokemon)
+    if(heights)
+    {
+        multishuffle(pokemon, pokemonsize)
+        shuffled_pokemon = pokemon
+        shuffled_size = pokemonsize
+    }
+    else
+    {
+        shuffled_pokemon = shuffle(pokemon)
+    }
 
     // Fakemon sprites
     if (Math.random() < shiny_odds) {
@@ -36,9 +48,10 @@ function create() {
     shuffled_pokemon.slice(0, max_onscreen).forEach(function (pokemon) {
         for (var val in pokemon) {
             list = pokemon[val]
-            form = pokemon[val][Math.floor(Math.random() * pokemon[val].length)]
+            formval = Math.floor(Math.random() * pokemon[val].length)
+            form = pokemon[val][formval]
         }
-
+        height_pos.push(formval)
         export_data["background_sprites"].push(form)
 
         if (Math.random() < shiny_odds) {
@@ -68,8 +81,29 @@ function create() {
 
         onscreen_pokemon += '<img class="' + special + sparkle + '" id="' + area + '" src="sprites/' + shiny + form + '.gif" onerror="this.style.display=\'none\'" alt=/>';
     });
+    shuffled_size.slice(0, max_onscreen).forEach(function (pokemonsize) {
+        i=0
+        for (var val in pokemonsize) {
+            list = pokemonsize[val]
+            form = pokemonsize[val][height_pos[i]]
+            //alert(form)
+            height_multi.push(form)
+            i++
+        }
+    });
 
     body_wrapper.innerHTML = onscreen_pokemon
+    if(heights){
+    setTimeout(function(){
+        i = 0
+        $("img").each(function(){
+            h = $(this).height() * height_multi[i];
+            console.log(h)
+            $(this).height(h);
+            i++
+        });
+    }, 100);
+    }
 }
 
 var randomOrder = function () {
@@ -95,7 +129,6 @@ var randomOrder = function () {
             }
 
             if (image['className'] == "sphealnone" || image['className'] == "sphealsparkle") {
-                console.log('spheal')
                 $('.sphealnone').css('margin-top', y)
 				$('.sphealsparkle').css('margin-top', y)
 			}
@@ -128,4 +161,20 @@ function shuffle(array) {
     }
 
     return array;
+}
+
+function multishuffle(array, array2) {
+    let i = array.length,
+        rand;
+
+    while (i != 0) {
+        rand = Math.floor(Math.random() * i);
+        i--;
+        [array[i], array[rand]] = [
+            array[rand], array[i]
+        ];
+        [array2[i], array2[rand]] = [
+            array2[rand], array2[i]
+        ];
+    }
 }
