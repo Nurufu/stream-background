@@ -1,13 +1,15 @@
-max_onscreen = 16;
+max_onscreen = 128;
 shiny_odds = 1 / 128;
 reload_mins = 5;
-big_wailords = true;
+big_wailords = false;
 spheal_spin = true;
 heights = true;
 
 create();
 window.onload = function () {
-    randomOrder()
+    setTimeout(function () {
+        randomOrder()
+    }, 250);
 }
 
 $(function () {
@@ -81,13 +83,15 @@ function create() {
 
         onscreen_pokemon += '<img class="' + special + sparkle + '" id="' + area + '" src="sprites/' + shiny + form + '.gif" onerror="this.style.display=\'none\'" alt=/>';
     });
+    i=0
     shuffled_size.slice(0, max_onscreen).forEach(function (pokemonsize) {
-        i=0
         for (var val in pokemonsize) {
             list = pokemonsize[val]
             form = pokemonsize[val][height_pos[i]]
+            //console.log(form)
             //alert(form)
             height_multi.push(form)
+            //console.log(bug[i] + " ",pokemonsize[val][height_pos[i]])
             i++
         }
     });
@@ -95,14 +99,17 @@ function create() {
     body_wrapper.innerHTML = onscreen_pokemon
     if(heights){
     setTimeout(function(){
+        //console.log(height_pos)
         i = 0
         $("img").each(function(){
+            s = "Height slot: "+ height_pos[i] + " Multi: " + height_multi[i]+" OG Height: "+$(this).height()
             h = $(this).height() * height_multi[i];
-            console.log(h)
+            //console.log(h)
             $(this).height(h);
+            console.log(s + " New Height: " + $(this).height()+" ", shuffled_pokemon[i])
             i++
         });
-    }, 100);
+    }, 200);
     }
 }
 
@@ -143,7 +150,7 @@ var randomOrder = function () {
         });
     }
 
-    shuffleSprites('#ground', 1000, 50)
+    shuffleSprites('#ground', 1050, 50)
     shuffleSprites('#sky', 10, 400)
     body_wrapper.innerHTML += sparkles;
 }
