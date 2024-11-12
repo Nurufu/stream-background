@@ -7,9 +7,18 @@ heights = true;
 
 create();
 window.onload = function () {
-    setTimeout(function () {
+    //250ms delay to ensure all html elements are loaded prior to attempting to apply new sizes
+    if(heights)
+    {
+        setTimeout(function () {
+            randomOrder()
+        }, 250);
+    }
+    else
+    {
         randomOrder()
-    }, 250);
+    }
+
 }
 
 $(function () {
