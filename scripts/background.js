@@ -1,7 +1,7 @@
-max_onscreen = 16;
+max_onscreen = 128;
 shiny_odds = 1 / 128;
 reload_mins = 5;
-big_wailords = false;
+big_wailords = true;
 spheal_spin = true;
 heights = true;
 
@@ -28,6 +28,7 @@ function create() {
     var body_wrapper = document.getElementById("body");
     if(heights)
     {
+        //Ensures both arrays of objects are shuffled identically
         multishuffle(pokemon, pokemonsize)
         shuffled_pokemon = pokemon
         shuffled_size = pokemonsize
@@ -42,6 +43,7 @@ function create() {
         if(heights)
             {
                 max_onscreen + 1
+                //Ensures both arrays of objects are shuffled identically
                 multishuffle(fakemon,fakemonsize)
                 shuffled_fakemon = fakemon
                 shuffled_pokemon.unshift(shuffled_fakemon[0])
@@ -85,7 +87,8 @@ function create() {
 
         special = ""
 
-        if (form == "wailord" && big_wailords) {
+        //Do not enable big_wailords if heights is enabled. Causes Wailord to take up the entire screen while also rendering on-top of everything else.
+        if (form == "wailord" && big_wailords && !heights) {
             special = "wailord"
         }
 
@@ -117,6 +120,10 @@ function create() {
             i++
         });
     }, 200);
+        //Change scale from 1.6x to 1.2x. Big mons at 1.6x are WAY too big.
+        $('img').css('transform', 'translate(var(--x-position), var(--y-position)) scale(1.2)')
+        //Remove max-width
+        $('img').css('max-width', '9999px')
     }
 }
 
@@ -158,6 +165,7 @@ var randomOrder = function () {
     }
     if(heights==true)
     {
+        //Helps the smaller ground mons stay on the ground and keeps the bigger (mostly gmax) mons stay on screen
         shuffleSprites('#ground', 1100, 100)
         shuffleSprites('#sky', 10, 400)
     }
