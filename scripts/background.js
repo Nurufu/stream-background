@@ -125,7 +125,8 @@ function create() {
             s = "Height slot: "+ height_pos[i] + " Multi: " + height_multi[i]+" OG Height: "+$(this).height()
             h = $(this).height() * height_multi[i];
             $(this).height(h);
-            console.log(s + " New Height: " + $(this).height()+" ", shuffled_pokemon[i])
+            //Logging for checking which Pokemon are chosen, their original height in px, the multiplier applied to them, and their new height px
+            //console.log(s + " New Height: " + $(this).height()+" ", shuffled_pokemon[i])
             i++
         });
     }, 200);
