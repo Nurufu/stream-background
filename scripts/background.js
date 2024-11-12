@@ -1,4 +1,4 @@
-max_onscreen = 128;
+max_onscreen = 16;
 shiny_odds = 1 / 128;
 reload_mins = 5;
 big_wailords = false;
@@ -38,12 +38,24 @@ function create() {
     }
 
     // Fakemon sprites
-    if (Math.random() < shiny_odds) {
-        max_onscreen + 1
-        shuffled_fakemon = shuffle(fakemon)
-        shuffled_pokemon.unshift(shuffled_fakemon[0])
+    if (Math.random() < shiny_odds)  {
+        if(heights)
+            {
+                max_onscreen + 1
+                multishuffle(fakemon,fakemonsize)
+                shuffled_fakemon = fakemon
+                shuffled_pokemon.unshift(shuffled_fakemon[0])
+                shuffled_fakesize = fakemonsize
+                shuffled_size.unshift(shuffled_fakesize[0])
+            }
+        else
+        {
+            max_onscreen + 1
+            shuffled_fakemon = shuffle(fakemon)
+            shuffled_pokemon.unshift(shuffled_fakemon[0])
+        }
     }
-
+    
     onscreen_pokemon = ''
     export_data = { "background_sprites": [], "shiny_sprites": [] }
 
@@ -88,10 +100,7 @@ function create() {
         for (var val in pokemonsize) {
             list = pokemonsize[val]
             form = pokemonsize[val][height_pos[i]]
-            //console.log(form)
-            //alert(form)
             height_multi.push(form)
-            //console.log(bug[i] + " ",pokemonsize[val][height_pos[i]])
             i++
         }
     });
@@ -99,12 +108,10 @@ function create() {
     body_wrapper.innerHTML = onscreen_pokemon
     if(heights){
     setTimeout(function(){
-        //console.log(height_pos)
         i = 0
         $("img").each(function(){
             s = "Height slot: "+ height_pos[i] + " Multi: " + height_multi[i]+" OG Height: "+$(this).height()
             h = $(this).height() * height_multi[i];
-            //console.log(h)
             $(this).height(h);
             console.log(s + " New Height: " + $(this).height()+" ", shuffled_pokemon[i])
             i++
@@ -150,7 +157,7 @@ var randomOrder = function () {
         });
     }
 
-    shuffleSprites('#ground', 1050, 50)
+    shuffleSprites('#ground', 1100, 100)
     shuffleSprites('#sky', 10, 400)
     body_wrapper.innerHTML += sparkles;
 }
