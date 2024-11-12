@@ -15,7 +15,7 @@ img {
 
 .sphealnone, .sphealsparkle {
     animation: spin linear 5s infinite, fadeIn ease 5s;
-    -webkit-animation: spin linear 5s, infinite fadeIn ease 5s;
+    -webkit-animation: spin linear 5s, infinite, fadeIn ease 5s;
     -ms-animation: spin linear 5s infinite, fadeIn ease 5s;
     -o-animation: spin linear 5s infinite, fadeIn ease 5s;
     -moz-animation: spin linear 5s infinite, fadeIn ease 5s;
