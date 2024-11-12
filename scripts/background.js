@@ -55,7 +55,7 @@ function create() {
             shuffled_pokemon.unshift(shuffled_fakemon[0])
         }
     }
-    
+
     onscreen_pokemon = ''
     export_data = { "background_sprites": [], "shiny_sprites": [] }
 
@@ -156,9 +156,16 @@ var randomOrder = function () {
             }
         });
     }
-
-    shuffleSprites('#ground', 1100, 100)
-    shuffleSprites('#sky', 10, 400)
+    if(heights==true)
+    {
+        shuffleSprites('#ground', 1100, 100)
+        shuffleSprites('#sky', 10, 400)
+    }
+    else
+    {
+        shuffleSprites('#ground', 1000, 50)
+        shuffleSprites('#sky', 10, 400)
+    }
     body_wrapper.innerHTML += sparkles;
 }
 
