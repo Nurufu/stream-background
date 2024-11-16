@@ -1,130 +1,144 @@
-max_onscreen = 16;
-shiny_odds = 1 / 128;
-reload_mins = 5;
-big_wailords = true;
-spheal_spin = true;
+// Stream background config
+const config = {
+    maxOnscreen: 16, // Maximum number of unique species to display at a time
+    reloadMinutes: 5, // Refresh and shuffle background every n minutes
+    shinyOdds: 1 / 128, // Chance for each species to be shiny (multiple can shine at once)
+    swarms: true, // Chance for a species to swarm (adds swarmAmount of that species)
+    swarmAmount: 16,
+    swarmOdds: 1 / 64,
+    fakemonOdds: 1 / 128, // Chance to add a single "fakemon" from Smogon's CAP - https://www.smogon.com/dex/ss/formats/cap/
+    bigWailords: true, // BIG FUCKINF WAILORD
+    sphealSpin: true // Spinny boi
+};
 
+// Create background elements on load
 create();
-window.onload = function () {
-    randomOrder()
-}
+window.onload = randomOrder;
 
+// Fade in/out effect and periodic reload
 $(function () {
     $('body').fadeIn(500);
-    setTimeout(function () {
-        $('body').fadeOut(500, function () {
-            location.reload(true);
-        });
-    }, reload_mins * 60000);
+    setTimeout(() => {
+        $('body').fadeOut(500, () => location.reload(true));
+    }, config.reloadMinutes * 60000);
 });
 
+// Generate Pokémon and their attributes
 function create() {
-    var body_wrapper = document.getElementById("body");
+    let onscreenPokemon = "";
+    const shuffledPokemon = shuffle(pokemon).slice(0, config.maxOnscreen);
 
-    shuffled_pokemon = shuffle(pokemon)
-
-    // Fakemon sprites
-    if (Math.random() < shiny_odds) {
-        max_onscreen + 1
-        shuffled_fakemon = shuffle(fakemon)
-        shuffled_pokemon.unshift(shuffled_fakemon[0])
+    // Handle Fakemon
+    if (Math.random() < config.fakemonOdds) {
+        const shuffledFakemon = shuffle(fakemon);
+        shuffledPokemon.unshift(shuffledFakemon[0]);
     }
 
-    onscreen_pokemon = ''
-    export_data = { "background_sprites": [], "shiny_sprites": [] }
+    // Handle swarms
+    if (config.swarms && Math.random() < config.swarmOdds) {
+        const swarm = Array(config.swarmAmount).fill(shuffledPokemon[0]);
+        shuffledPokemon.push(...swarm);
+    }
 
-    shuffled_pokemon.slice(0, max_onscreen).forEach(function (pokemon) {
-        for (var val in pokemon) {
-            list = pokemon[val]
-            form = pokemon[val][Math.floor(Math.random() * pokemon[val].length)]
+    // Process each Pokémon
+    shuffledPokemon.forEach((pokemon) => {
+        let form;
+        for (const val in pokemon) {
+            form = pokemon[val][Math.floor(Math.random() * pokemon[val].length)];
         }
 
-        export_data["background_sprites"].push(form)
+        const isShiny = Math.random() < config.shinyOdds;
+        const sparkleClass = isShiny ? "sparkle" : "none";
+        const spritePath = isShiny ? "shiny/" : "normal/";
+        const area = floating_pokemon.includes(form) ? "sky" : "ground";
 
-        if (Math.random() < shiny_odds) {
-            sparkle = "sparkle"
-            shiny = "shiny/"
-            export_data["shiny_sprites"].push(form)
-        } else {
-            sparkle = "none"
-            shiny = "normal/"
-        }
+        // Special cases
+        let specialClass = "";
+        if (form === "wailord" && config.bigWailords) specialClass = "wailord";
+        if (form === "spheal" && config.sphealSpin) specialClass = "spheal";
 
-        if (floating_pokemon.includes(form)) {
-            area = "sky"
-        } else {
-            area = "ground"
-        }
-
-        special = ""
-
-        if (form == "wailord" && big_wailords) {
-            special = "wailord"
-        }
-
-        if (form == "spheal" && spheal_spin) {
-			special = "spheal"
-		}
-
-        onscreen_pokemon += '<img class="' + special + sparkle + '" id="' + area + '" src="sprites/' + shiny + form + '.gif" onerror="this.style.display=\'none\'" alt=/>';
+        // Append the Pokémon sprite
+        onscreenPokemon += `
+            <img class="${specialClass}${sparkleClass}" id="${area}" 
+                 src="sprites/${spritePath}${form}.gif" 
+                 onerror="this.style.display='none'" 
+                 alt="Pokemon">
+        `;
     });
 
-    body_wrapper.innerHTML = onscreen_pokemon
+    // Inject Pokémon sprites into the body
+    document.getElementById("body").innerHTML = onscreenPokemon;
 }
 
-var randomOrder = function () {
-    var sparkles = ''
-    var body_wrapper = document.getElementById("body");
+// Randomly position and style Pokémon sprites
+function randomOrder() {
+    let sparklesHTML = "";
+    const bodyWrapper = document.getElementById("body");
 
     function shuffleSprites(selector, hTop, hBot) {
-        sprites = document.querySelectorAll(selector);
-        sprites.forEach((image) => {
-            var h = 1440;
-            var w = 4096;
+        const sprites = document.querySelectorAll(selector);
+        const maxHeight = 1440;
+        const maxWidth = 4096;
 
-            var x = Math.floor(Math.random() * ((w - image.offsetWidth) - 0 + 1));
-            var y = Math.floor(Math.random() * ((h - image.offsetHeight - hBot) - hTop + 1)) + hTop;
-            var z = y;
+        sprites.forEach((sprite) => {
+            const x = Math.floor(Math.random() * (maxWidth - sprite.offsetWidth));
+            let y = Math.floor(Math.random() * (maxHeight - sprite.offsetHeight - hBot - hTop)) + hTop;
+            let z = y;
 
-            if (image['className'] == "wailordnone") {
+            // Special adjustments for classes
+            if (sprite.classList.contains("wailordnone")) {
                 y -= 50;
-                z = 6969696969;
-            } else if (image['className'] == "wailordsparkle") {
+                z = 9999;
+            } else if (sprite.classList.contains("wailordsparkle")) {
                 y -= 200;
-                z = 6969696969;
+                z = 9999;
             }
 
-            if (image['className'] == "sphealnone" || image['className'] == "sphealsparkle") {
-                $('.sphealnone').css('margin-top', y)
-				$('.sphealsparkle').css('margin-top', y)
-			}
+            if (sprite.classList.contains("sphealnone") || sprite.classList.contains("sphealsparkle")) {
+                document.querySelectorAll(".sphealnone, .sphealsparkle").forEach(spheal => {
+                    spheal.style.marginTop = `${y}px`;
+                });
+            }
 
-            image.style.cssText += "--x-position:" + x + "px; --y-position:" + y + "px; z-index:" + z;
+            // Apply styles
+            sprite.style.cssText += `
+                --x-position: ${x}px;
+                --y-position: ${y}px;
+                z-index: ${z};
+            `;
 
-            if (image['className'] == "sparkle") {
-                sparkles += '<img style="--x-position:' + (x - (image['width'] / 6)) + 'px; --y-position:' + (y - (image['height'] / 6)) + 'px; z-index: -1; width: ' + (image['width'] * 1.3) + 'px; max-height: 150px; max-width: 150px" src="./sprites/sparkles.gif" onerror="this.style.display=\'none\'" alt=/>';
-            } else if (image['className'] == "wailordsparkle") {
-                sparkles += '<img style="--x-position:' + (x + (image['width'] / 6)) + 'px; --y-position:' + (y - (image['height'] / 6)) + 'px; z-index: -1; width: ' + (image['width'] * 1.3) + 'px; max-height: 1000px; max-width: 1000px" src="./sprites/sparkles.gif" onerror="this.style.display=\'none\'" alt=/>';
+            // Add sparkle images
+            if (sprite.classList.contains("sparkle") || sprite.classList.contains("wailordsparkle")) {
+                const offset = sprite.offsetWidth / 6;
+                const sparkleSize = sprite.offsetWidth * 1.3;
+                const sparkleMaxSize = sprite.classList.contains("wailordsparkle") ? 1000 : 150;
+
+                sparklesHTML += `
+                    <img style="--x-position: ${x + (sprite.classList.contains("wailordsparkle") ? offset : -offset)}px; 
+                                 --y-position: ${y - offset}px; 
+                                 z-index: -1; width: ${sparkleSize}px; 
+                                 max-height: ${sparkleMaxSize}px; max-width: ${sparkleMaxSize}px;" 
+                         src="./sprites/sparkles.gif" 
+                         onerror="this.style.display='none'" 
+                         alt="Sparkle">
+                `;
             }
         });
     }
 
-    shuffleSprites('#ground', 1000, 50)
-    shuffleSprites('#sky', 10, 400)
-    body_wrapper.innerHTML += sparkles;
+    // Shuffle sprites for ground and sky
+    shuffleSprites('#ground', 1000, 50);
+    shuffleSprites('#sky', 10, 400);
+
+    // Append sparkles to the body
+    bodyWrapper.innerHTML += sparklesHTML;
 }
 
+// Fisher-Yates shuffle
 function shuffle(array) {
-    let i = array.length,
-        rand;
-
-    while (i != 0) {
-        rand = Math.floor(Math.random() * i);
-        i--;
-        [array[i], array[rand]] = [
-            array[rand], array[i]
-        ];
+    for (let i = array.length - 1; i > 0; i--) {
+        const rand = Math.floor(Math.random() * (i + 1));
+        [array[i], array[rand]] = [array[rand], array[i]];
     }
-
     return array;
 }
