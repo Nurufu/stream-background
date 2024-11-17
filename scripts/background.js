@@ -112,7 +112,9 @@ function create() {
         }
     });
 
-    bodyWrapper.innerHTML = onscreenPokemon
+    // Inject Pokémon sprites into the body
+    document.getElementById("body").innerHTML = onscreenPokemon;
+    
     if(config.heights){
     setTimeout(function(){
         i = 0
